@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, Mail, UserCircle, Briefcase, GraduationCap } from "lucide-react";
 
-// ১. টিউটরদের জন্য স্ট্যাটাস কম্পোনেন্ট (পেজের বাইরে রাখাই ভালো)
+// 1.for tutor stats
 const TutorStats = ({ data }: any) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
     <Card className="bg-blue-50/50 border-blue-100">
@@ -32,11 +32,11 @@ const TutorStats = ({ data }: any) => (
         <p className="text-2xl font-bold">45+</p>
       </CardContent>
     </Card>
-    {/* অন্য কার্ডগুলো... */}
+    {/* other cards... */}
   </div>
 );
 
-// ২. স্টুডেন্টদের জন্য স্ট্যাটাস কম্পোনেন্ট
+// 2.for students
 const StudentStats = ({ data }: any) => (
   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
     <Card className="bg-green-50/50 border-green-100">
@@ -47,16 +47,16 @@ const StudentStats = ({ data }: any) => (
         <p className="text-2xl font-bold">12</p>
       </CardContent>
     </Card>
-    {/* অন্য কার্ডগুলো... */}
+    {/* other cards... */}
   </div>
 );
 
-// ৩. আপনার মূল পেজ কম্পোনেন্ট
+// 3. your main page component
 const ProfilePage = async () => {
-  // এখানেই আপনার `getProfile` কল হবে
+  // here  `getProfile` will be called on the server side, so it can securely access cookies or session for auth
   const { data } = await getProfile();
 
-  // ডাটা না থাকলে সেফটি চেক
+  // data dont exist or loading state handleing
   if (!data) return <div className="text-center py-20 text-gray-500">Loading profile...</div>;
 
   const isTutor = data.role === "TUTOR";
@@ -116,7 +116,7 @@ const ProfilePage = async () => {
                 "Hello! I am {data.name}, focused on {isTutor ? "teaching and mentoring students" : "learning and achieving my academic goals"}."
               </p>
 
-              {/* ডাটা পাস করে কন্ডিশনাল রেন্ডারিং */}
+              {/* data pass for conditional rendering */}
               {isTutor ? <TutorStats data={data} /> : <StudentStats data={data} />}
             </div>
           </div>

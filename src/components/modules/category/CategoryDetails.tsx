@@ -278,52 +278,7 @@ export default function CategoryDetails({ category, user }: CategoryDetailsProps
     fetchSubjects();
   }, []);
 
-  // বুকিং হ্যান্ডলার
-//  async function handleBooking(data: BookingFormValues) {
-//   const payload = {
-//     studentId: user?.id,
-//     tutorId: category?.tutorId,
-//     categoryId: category?.id,
-//     subjectId: data?.subjectId,
-//     startDate: new Date(data.startDate).toISOString(),
-//     endDate: new Date(data.endDate).toISOString(),
-//     note: data.note,
-//   };
-
-//   try {
-//     const res = await createBooking(payload);
-
-//     console.log("BOOKING RESPONSE:", res);
-
-//     if (!res?.success) {
-//       toast.error(res?.message || "Booking failed.");
-//       return;
-//     }
-
-//     toast.success(res.message || "Booking request sent successfully!");
-
-//     // ✅ SAFE bookingId extraction (backend mismatch handle)
-//     const bookingId =
-//       res?.data?.id ||
-//       res?.data?.bookingId ||
-//       res?.data?._id;
-
-//     console.log("EXTRACTED bookingId:", bookingId);
-
-//     if (!bookingId) {
-//       toast.error("Booking ID not found from backend ❌");
-//       return;
-//     }
-
-//     router.push(`/booking/confirm?bookingId=${bookingId}`);
-
-//   } catch (error: any) {
-//     console.error("Booking Error:", error);
-//     toast.error(error?.message || "Something went wrong. Please try again.");
-//   }
-// }
-
-
+ 
 
 // বুকিং হ্যান্ডলার
 async function handleBooking(data: BookingFormValues) {

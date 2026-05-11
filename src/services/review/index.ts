@@ -52,3 +52,44 @@ export const getTutorReviews = async (tutorId: string) => {
 
   return res.json();
 };
+
+
+
+export const submitReview = async (payload: any) => {
+  const token = (await cookies()).get("token")?.value;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reviews`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  return res.json();
+};
+
+
+
+// "use server"
+// import { cookies } from "next/headers";
+
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+// // টিউটরের সব রিভিউ পাওয়ার জন্য
+// export const getTutorReviews = async (tutorId: string) => {
+//   const res = await fetch(`${BASE_URL}/reviews/tutor/${tutorId}`, {
+//     cache: 'no-store' // লেটেস্ট রিভিউ পাওয়ার জন্য
+//   });
+//   return res.json();
+// };
+
+// // স্টুডেন্টের নিজের দেওয়া রিভিউ দেখার জন্য (যদি ব্যাকএন্ডে এপিআই থাকে)
+// export const getMyReviews = async () => {
+//   const token = (await cookies()).get("token")?.value;
+//   const res = await fetch(`${BASE_URL}/reviews/my-reviews`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   return res.json();
+// };

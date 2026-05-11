@@ -1,78 +1,140 @@
-"use client";
-
-import React, { useState } from "react";
-import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { paymentServices } from "@/services/payment"; // আপনার সার্ভিস পাথ
-
-interface CheckoutFormProps {
-  bookingId: string;
-  amount: number;
-}
 
 
-// ১. এখানে প্রপসের টাইপ ডিফাইন করুন
-interface CheckoutFormProps {
-  clientSecret: string;
-}
 
 
-export default function CheckoutForm({ bookingId, amount }: CheckoutFormProps) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+// "use client";
 
-    if (!stripe || !elements) {
-      return;
-    }
+// import {
+//   CardElement,
+//   useElements,
+//   useStripe,
+// } from "@stripe/react-stripe-js";
 
-    setIsProcessing(true);
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { confirmPayment } from "@/services/payment";
 
-    // ১. পেমেন্ট কনফার্ম করা
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/dashboard/bookings/success`,
-      },
-      redirect: "if_required", // সরাসরি হ্যান্ডেল করার জন্য
-    });
+// type Props = {
+//   bookingId: string;
+//   amount: number;
+//   clientSecret: string;
+// };
 
-    if (error) {
-      toast.error(error.message || "Something went wrong");
-      setIsProcessing(false);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      // ২. পেমেন্ট সফল হলে আমাদের ডাটাবেজে কনফার্ম করা (Server Action কল)
-      try {
-        await paymentServices.confirmPaymentInDB(bookingId, paymentIntent.id);
-        toast.success("Payment successful and recorded!");
-        router.push("/dashboard/student/bookings"); // সফলতার পর রিডাইরেক্ট
-        router.refresh();
-      } catch (dbError: any) {
-        toast.error("Payment successful, but failed to update database.");
-        console.error(dbError);
-      } finally {
-        setIsProcessing(false);
-      }
-    }
+// export default function CheckoutForm({
+//   bookingId,
+//   amount,
+//   clientSecret,
+// }: Props) {
+//   const stripe = useStripe();
+//   const elements = useElements();
+//   const router = useRouter();
+
+//   const [loading, setLoading] =
+//     useState(false);
+
+//   const [error, setError] =
+//     useState("");
+
+//   const handleSubmit = async (
+//     e: React.FormEvent
+//   ) => {
+//     e.preventDefault();
+
+//     if (!stripe || !elements) return;
+
+//     setLoading(true);
+
+//     const cardElement =
+//       elements.getElement(CardElement);
+
+//     if (!cardElement) return;
+
+//     const result =
+//       await stripe.confirmCardPayment(
+//         clientSecret,
+//         {
+//           payment_method: {
+//             card: cardElement,
+//           },
+//         }
+//       );
+
+//     if (result.error) {
+//       setError(
+//         result.error.message ||
+//           "Payment failed"
+//       );
+
+//       setLoading(false);
+//       return;
+//     }
+
+//     if (
+//       result.paymentIntent?.status ===
+//       "succeeded"
+//     ) {
+//       await confirmPayment(
+//         bookingId,
+//         result.paymentIntent.id
+//       );
+
+//       router.push(
+//         `/booking-confirm/${bookingId}`
+//       );
+//     }
+
+//     setLoading(false);
+//   };
+
+//   return (
+//     <form
+//       onSubmit={handleSubmit}
+//       className="space-y-4"
+//     >
+//       <div className="border p-4 rounded">
+//         <CardElement />
+//       </div>
+
+//       {error && (
+//         <p className="text-red-500">
+//           {error}
+//         </p>
+//       )}
+
+//       <button
+//         type="submit"
+//         disabled={loading}
+//         className="bg-black text-white px-4 py-2 rounded"
+//       >
+//         {loading
+//           ? "Processing..."
+//           : `Pay $${amount}`}
+//       </button>
+//     </form>
+//   );
+// }
+
+
+import PaymentSection from "@/components/paymentForm/PaymentSection";
+
+type Props = {
+  params: {
+    bookingId: string;
   };
+};
 
+export default function Page({
+  params,
+}: Props) {
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="p-4 border rounded-lg bg-white shadow-sm">
-        <PaymentElement />
-      </div>
-      
-      <button
-        disabled={isProcessing || !stripe || !elements}
-        className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
-      >
-        {isProcessing ? "Processing..." : `Pay $${amount}`}
-      </button>
-    </form>
+    <div className="flex justify-center py-20">
+
+      <PaymentSection
+        bookingId={params.bookingId}
+        amount={50}
+      />
+
+    </div>
   );
 }

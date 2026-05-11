@@ -58,17 +58,14 @@ const STUDENT_navMain = [
     icon: SquareTerminal,
     isActive: true,
     items: [
-      { title: "My Bookings", url: "/dashboard/student/bookings" },
-     
-
       {
         title: "History",
         url: "#",
       },
-      // {
-      //   title: "Starred",
-      //   url: "#",
-      // },
+      {
+        title: "Starred",
+        url: "#",
+      },
       {
         title: "Settings",
         url: "#",
@@ -127,3 +124,32 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
 }
 
 
+
+
+// jodi amader payment form er code ta dekhte chai, tahole amra src/components/paymentForm/StripeWrapper.tsx file ta open korbo. Oikhane amra CheckoutForm component ke Elements component er vitor wrap korechi, jeta Stripe er context provide kore. CheckoutForm component e amra clientSecret, bookingId, and amount props pass korechi, jeta payment process er jonno dorkar.
+
+
+
+
+// const STUDENT_navMain = [
+//   {
+//     title: "STUDENT Dash",
+//     url: "/dashboard/student", // ড্যাশবোর্ডের মেইন ইউআরএল
+//     icon: SquareTerminal,
+//     isActive: true,
+//     items: [
+//       {
+//         title: "My Bookings", // পেমেন্ট কনফার্ম হওয়ার পর এখানে বুকিং দেখা যাবে
+//         url: "/dashboard/student/bookings", 
+//       },
+//       {
+//         title: "Payment History",
+//         url: "/dashboard/student/payment-history",
+//       },
+//       {
+//         title: "Settings",
+//         url: "/dashboard/student/settings",
+//       },
+//     ],
+//   },
+// ];
